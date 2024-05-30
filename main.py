@@ -11,9 +11,9 @@ def parser(d: bytes) -> None:
     string_data = d.decode()
     humidity, temp_f, pressure_hpa = string_data.split(';')
 
-    print('Temperature: {}°F'.format(temp_f))
-    print('Humidity   : {}%'.format(humidity))
-    print('Pressure   : {}\n'.format(pressure_hpa))
+    print('Temperature: {:.2f}°F'.format(float(temp_f)))
+    print('Humidity   : {:.2f}%'.format(float(humidity)))
+    print('Pressure   : {:.2f}hPa\n'.format(float(pressure_hpa)))
 
 try:
     while True:
