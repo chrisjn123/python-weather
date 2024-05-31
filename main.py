@@ -1,11 +1,12 @@
 import socket
 
-UDP_IP = "192.168.1.255"
+UDP_IP = ""
 UDP_PORT = 4210
 
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
+#sock.settimeout(5)
 
 def parser(d: bytes) -> None:
     string_data = d.decode()
@@ -16,15 +17,18 @@ def parser(d: bytes) -> None:
     print('Pressure   : {:.2f}hPa\n'.format(float(pressure_hpa)))
 
 try:
+    print('Starting application...')
     while True:
-        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-        print("received message: %s" % data)
+        data, addr = sock.recvfrom(1024)
+        print(f'Addr: {addr}')
+        print(f"Received message: {data}")
 
         if data == b'syn':
             print('sending \'ack\'')
             sock.sendto(b'ack', addr)
-        
         else:
             parser(data)
+except TimeoutError as e:
+    print(f'Socket Timed out: {e}')
 except KeyboardInterrupt:
     print("User cancelled program.")
