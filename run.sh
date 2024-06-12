@@ -1,7 +1,12 @@
 #!/bin/bash
 
+docker stop weather-reciever 
+
 docker run \
     --rm \
-    -it \
+    -d \
+    -u "$UID" \
+    --name weather-reciever \
     --net=host \
-    weather-app:latest 
+    -v "/home/$USER/.weather-data":/data:z \
+    weather-app:latest  

@@ -15,15 +15,16 @@ sock.bind((UDP_IP, UDP_PORT))
 count = 0
 
 def write_data(data: bytes) -> None:
-    with open('~/.weather.lock', 'w') as lock, open('~/.weather.dat', 'w') as w_data:
+    with open('/data/.weather.lock', 'w') as lock, open('/data/.weather.dat', 'a') as w_data:
         lock.write('Locking\n')
         string_data = data.decode()
         humidity, temp_f, pressure_hpa = string_data.split(';')
+        w_data.write('-'*10 + '\n')
         w_data.write(f'{humidity}\n')
         w_data.write(f'{temp_f}\n')
         w_data.write(f'{pressure_hpa}\n')
     
-    remove('`/.weather.lock')
+    remove('/data/.weather.lock')
 
 def parser(d: bytes) -> None:
     global count 
